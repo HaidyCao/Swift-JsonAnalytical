@@ -28,10 +28,17 @@ class ViewController: UIViewController {
         let persion: AnyObject! = Json.jsonToModel(json, className: "Persion")
         
         if persion != nil {
-            print((persion as! Persion).childs)
+            print((persion as! Persion).name)
         } else {
         }
         
+        
+        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 30))
+        titleView.backgroundColor = UIColor.redColor()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "返回", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "确定", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
+        self.navigationItem.titleView = titleView
     }
 
     override func didReceiveMemoryWarning() {

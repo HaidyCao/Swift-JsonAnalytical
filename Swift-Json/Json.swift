@@ -11,12 +11,10 @@ import Foundation
 /// Json 解析
 class Json {
     
-    class func dataToModel(jsonData: NSData?, className: String) -> AnyObject! {
-        if let data = jsonData {
-            do {
-                return try jsonToModel(NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers), className: className)
-            } catch {
-            }
+    class func dataToModel(data: NSData, className: String) -> AnyObject! {
+        do {
+            return try jsonToModel(NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers), className: className)
+        } catch {
         }
         return nil
     }
@@ -27,8 +25,7 @@ class Json {
             return nil
         }
         let obj = instanceFromName(className)
-        let properties = reflect(obj)
-        
+        let properties = Mirror(reflecting: obj)
         let dic: AnyObject?
         if dics!.isKindOfClass(NSArray) {
             dic = (dics as! NSArray).lastObject
@@ -36,11 +33,11 @@ class Json {
             dic = dics
         }
         if dic != nil {
-            for i in 0 ..< properties.count {
-                let pro = properties[i]
-                let key = pro.0
-                let type = pro.1.valueType
-                if let value = dic?.valueForKey(key) {
+            for attr in properties.children {
+                let key = attr.label
+                let type = Mirror(reflecting: attr.value).subjectType
+                
+                if let value = dic?.valueForKey(key!) {
                     if isArray(type) {
                         let className = childClassName(type)
                         var array: [AnyObject] = [AnyObject]()
@@ -51,25 +48,19 @@ class Json {
                                 array.append(v)
                             }
                         }
-                        setValue(obj, value: array, key: key)
+                        obj.setValue(array, forKey: key!)
                     } else if isBaseType(type) {
-                        setValue(obj, value: value, key: key)
+                        obj.setValue(value, forKey: key!)
                     } else {
-                        let className = childClassName(type)
+                        let className = "\(type)"
                         if let value: AnyObject! = jsonToModel(value, className: className) {
-                            obj.setValue(value, forKey: key)
+                            obj.setValue(value, forKey: key!)
                         }
                     }
                 }
             }
         }
         return obj
-    }
-    
-    private class func setValue(obj: AnyObject, value: AnyObject!, key: String) {
-        if value != nil {
-            obj.setValue(value, forKey: key)
-        }
     }
     
     /// 从类名实例化
@@ -89,7 +80,7 @@ class Json {
             return NSClassFromString(className)
         }
         if let clazz: AnyClass = classFromName(className) {
-            return clazz.alloc()
+            return (clazz as! NSObject.Type).init()
         }
         return nil
     }
@@ -97,10 +88,9 @@ class Json {
     /// 是否包含Key
     private class func classHasKey(className: String, key: String) -> Bool {
         if let obj: AnyObject! = instanceFromName(className) {
-            let pros = reflect(obj)
-            for i in 0 ..< pros.count {
-                let pro = pros[i]
-                if key == pro.0 {
+            let pros = Mirror(reflecting: obj)
+            for child in pros.children {
+                if key == child.label {
                     return true
                 }
             }
@@ -122,13 +112,13 @@ class Json {
         return name
     }
     
-    /// Array包含的或者自己的类型
+    /// Array包含的类型
     private class func childClassName(type: Any.Type) -> String {
         let valueType = "\(type)"
-        var name = valueType.replace("Swift.Optional", to: "").replace("Swift.Array", to: "").replace("<", to: "").replace(">", to: "").replace("\(appName()).", to: "")
-        if name == "Swift.String" {
+        var name = valueType.replace("Optional", to: "").replace("Array", to: "").replace("<", to: "").replace(">", to: "").replace("\(appName()).", to: "")
+        if name == "String" {
             name = "NSString"
-        } else if name == "Swift.Int" || name == "Swift.Float" || name == "Swift.Double" || name == "Swift.Int64" || name == "Swift.Int32" {
+        } else if name == "Int" || name == "Float" || name == "Double" || name == "Int64" || name == "Int32" {
             name = "NSNumber"
         }
         return name
@@ -137,12 +127,12 @@ class Json {
     /// 是否为数组
     private class func isArray(type: Any.Type) -> Bool {
         let valueType = "\(type)"
-        return valueType.has("Swift.Array")
+        return valueType.has("Array")
     }
     
     /// 是否为基础类型
     private class func isBaseType(type: Any.Type) -> Bool {
-        return type is Int.Type || type is Int64.Type || type is Int32.Type || type is Float.Type || type is Double.Type || type is String.Type
+        return type is Int.Type || type is Int64.Type || type is Int32.Type || type is Float.Type || type is Double.Type || type is String.Type || type is Bool.Type || type is Optional<Int>.Type || type is Optional<Int64>.Type || type is Optional<Int32>.Type || type is Optional<Float>.Type || type is Optional<Double>.Type || type is Optional<String>.Type || type is Optional<Bool>.Type
     }
     
     /// 是否为基础类型
@@ -150,6 +140,7 @@ class Json {
         return className == "NSString" || className == "NSNumber"
     }
 }
+
 
 extension String {
     

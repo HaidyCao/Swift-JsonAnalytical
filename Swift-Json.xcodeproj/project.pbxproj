@@ -13,6 +13,7 @@
 		182742DE1B467013004E09D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 182742DD1B467013004E09D7 /* Assets.xcassets */; };
 		182742E11B467013004E09D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 182742DF1B467013004E09D7 /* LaunchScreen.storyboard */; };
 		182742EA1B467061004E09D7 /* Json.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182742E91B467061004E09D7 /* Json.swift */; };
+		185F38ED1B476BFF00BBD88F /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 185F38EC1B476BFF00BBD88F /* NavigationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		182742E01B467013004E09D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		182742E21B467013004E09D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		182742E91B467061004E09D7 /* Json.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Json.swift; sourceTree = "<group>"; };
+		185F38EC1B476BFF00BBD88F /* NavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				182742DD1B467013004E09D7 /* Assets.xcassets */,
 				182742DF1B467013004E09D7 /* LaunchScreen.storyboard */,
 				182742E21B467013004E09D7 /* Info.plist */,
+				185F38EC1B476BFF00BBD88F /* NavigationViewController.swift */,
 			);
 			path = "Swift-Json";
 			sourceTree = "<group>";
@@ -146,6 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				185F38ED1B476BFF00BBD88F /* NavigationViewController.swift in Sources */,
 				182742EA1B467061004E09D7 /* Json.swift in Sources */,
 				182742D91B467013004E09D7 /* ViewController.swift in Sources */,
 				182742D71B467013004E09D7 /* AppDelegate.swift in Sources */,
@@ -300,6 +304,7 @@
 				182742E71B467013004E09D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
