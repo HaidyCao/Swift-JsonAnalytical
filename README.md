@@ -5,12 +5,12 @@
 
   !!!注意Int、Float、Double等一些NSNumber类型的数据必须先赋值，否则会报错
 
-  /// 要解析的类
-  class Persion: NSObject {
-    var name: String!
-    var age: Int = 0
-    var childs: [Child]!
-  }
+>  // 要解析的类
+> <code>class Persion: NSObject {
+>    var name: String!`
+>    var age: Int = 0
+>    var childs: [Child]!
+>  }
   
   class Child: NSObject {
     var name: String!
@@ -28,6 +28,6 @@
             ]
         ]
         
-  let persion: AnyObject! = Json.jsonToModel(json, className: "Persion")
+  let persion: AnyObject! = Json.jsonToModel(json, className: "Persion")</code>
   
   解析完成
